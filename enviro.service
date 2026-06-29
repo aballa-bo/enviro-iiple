@@ -1,0 +1,20 @@
+[Unit]
+Description=Enviro+ IIPLE - monitoraggio ambientale cantiere
+# Attendi la rete (gli invii a OpenProject la richiedono) e l'audio (UMIK-1)
+After=network-online.target sound.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=administrator
+WorkingDirectory=/home/administrator/iiple
+# Interprete del virtual environment di iiple (NON serve "activate")
+ExecStart=/home/administrator/iiple/bin/python /home/administrator/iiple/enviro.py
+# Riavvia automaticamente se lo script si chiude o va in crash
+Restart=always
+RestartSec=10
+# Log subito visibili in journalctl (no buffering di stdout/stderr)
+Environment=PYTHONUNBUFFERED=1
+
+[Install]
+WantedBy=multi-user.target
